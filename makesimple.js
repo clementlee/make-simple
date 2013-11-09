@@ -31,14 +31,13 @@ xhr.send();
 document.body.addEventListener('DOMNodeInserted', function(event) {
 	walk(event.target);});
 
-function trim1 (str) {
+function trim (str) {
 	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 function getSynonyms(word) {
 	if(typeof word === 'undefined')
 		return [word];
 	word = word.toLowerCase();
-	//TODO: FIX THIS BECAUSE IT ISN'T WORKING
 	/*for(var i = 0; i < textdatabase.length; i++ ) {
 		var line = textdatabase[i];
 		//console.log(line);

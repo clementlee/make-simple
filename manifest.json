@@ -6,12 +6,18 @@
   "version": "0.2",
 
   "permissions": [
-  "unlimitedStorage"
+    "unlimitedStorage",
+    "http://*/*"
   ],
+
+  "background": {
+    "scripts": ["thesaurus.js"]
+  },
 
   "web_accessible_resources": [
     "mthesaur.txt"
   ],
+
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
