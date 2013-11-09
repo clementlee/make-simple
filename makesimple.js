@@ -59,14 +59,14 @@ function getSynonyms(word) {
 
 function walk(node) {
 	//console.log(textdatabase[0]);
-	var treeWalker = document.createTreeWalker(
+	var ent = document.createTreeWalker(
 		node,
 		NodeFilter.SHOW_TEXT,
 		null,
 		false
 		);
-	while(treeWalker.nextNode()) {
-		var current = treeWalker.currentNode;
+	while(ent.nextNode()) {
+		var current = ent.currentNode;
 		current.textContent = process(current.textContent);
 	}
 }
