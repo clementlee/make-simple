@@ -1,14 +1,21 @@
 console.log("loading");
 
-simplify(document.body);
-function simplify(node) {
-	console.log("yo dawg");
+walk(document.body);
+function walk(node) {
 	var child;
 	switch(node.nodeType) {
 		case 1:
+			for (child = node.firstChild; child; child = child.nextSibling) {
+				if(node.nodeName != "SCRIPT" && node.nodeName != "STYLE")
+					walk(child);
+			}
 			break;
 		case 3:
-			newwindow=window.open(url,'name','height=400,width=200');
+			process(node);
 			break;
 	}
+}
+
+function process(node){
+	console.log(node.nodeValue);
 }
