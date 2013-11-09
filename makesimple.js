@@ -18,7 +18,7 @@ xhr.onreadystatechange = function()
         	for(var j = 0; j < line.length; j++) {
         		if(line[j].length > aggression) {
         			for(var k = 0; k < line.length; k++) {
-        				if(line[k].length <= aggression) {
+        				if(line[k].length <= aggression && line[k].length > 0) {
         					hashtable[line[j]] = line[k];
         					break;
         				}
