@@ -5,8 +5,13 @@ xhr.open('GET', chrome.extension.getURL('mthesaur.txt'), true);
 xhr.onreadystatechange = function()
 {
     if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
-    {
-        var textdatabase = xhr.responseText.split("\n");
+    { 
+        var temptextdatabase = xhr.responseText.split("\n");
+        console.log(temptextdatabase);
+        for(var i = 0; i < temptextdatabase.length; i++) {
+        	var line = temptextdatabase[i];
+        	textdatabase.push(line.split(","));
+        }
         walk(document.body);
 
 		document.body.addEventListener('DOMNodeInserted', function(event) {
@@ -21,16 +26,15 @@ document.body.addEventListener('DOMNodeInserted', function(event) {
 function getSynonyms(word) {
 	if(word == undefined)
 		return word;
-	//console.log(word);
 	//TODO: FIX THIS BECAUSE IT ISN'T WORKING
-	for(line in textdatabase ) {
-		console.log('hi');
-		var split = line.split(",");
-		for(test in split) {
-			console.log(test);
-			/*if(split[i]===word) {
-				return split;
-			}*/
+	for(var i = 0; i < textdatabase.length; i++ ) {
+		var line = textdatabase[i];
+		for(var j = 0; j < line.length; j++) {
+			var test = line[j];
+			if(test===word) {
+				console.log("found: "+test);
+				return line;
+			}
 		}
 	}
 	return [word];
@@ -39,6 +43,7 @@ function getSynonyms(word) {
 
 
 function walk(node) {
+	//console.log(textdatabase[0]);
 	var treeWalker = document.createTreeWalker(
 	    node,
 	    NodeFilter.SHOW_TEXT,
@@ -60,12 +65,15 @@ function process(text){
 	for(var i = 0; i < words.length; i++) {
 		var word = words[i];
 		if(word != undefined && word.length > 8)
-			//console.log(word);
+			console.log(word);
 			var synonyms = getSynonyms(word);
 			//console.log(word+": ");
 			//console.log(synonyms);
-			//if(synonyms != undefined)
-			//	processedText = processedText.replace(word, getSynonyms(word)[3]);
+			if(synonyms != undefined) {
+
+				console.log("replacing "+word+" with "+ synonyms[0]);
+				processedText = processedText.replace(word, synonyms[0]);
+			}
 	}
 	return processedText;
 }
