@@ -1,5 +1,6 @@
 var textdatabase = [];
 var hashtable = {};
+var aggression = 5;
 
 var xhr = new XMLHttpRequest();
 xhr.open('GET', chrome.extension.getURL('mthesaur.txt'), true);
@@ -13,9 +14,9 @@ xhr.onreadystatechange = function()
         	var line = temptextdatabase[i].split(",");
         	textdatabase.push(line);
         	for(var j = 0; j < line.length; j++) {
-        		if(line[j].length > 4) {
+        		if(line[j].length > aggression) {
         			for(var k = 0; k < line.length; k++) {
-        				if(line[k].length < 5) {
+        				if(line[k].length <= aggression) {
         					hashtable[line[j]] = line[k];
         					break;
         				}
@@ -78,7 +79,7 @@ function process(text){
 	//console.log(words);
 	for(var i = 0; i < words.length; i++) {
 		var word = words[i];
-		if(typeof word != 'undefined' && word.length > 4) {
+		if(typeof word != 'undefined' && word.length > aggression) {
 			//console.log(word.length+": "+word);
 			var synonyms = getSynonyms(word);
 			//console.log(word+": ");
