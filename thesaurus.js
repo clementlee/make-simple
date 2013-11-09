@@ -16,3 +16,9 @@ function getSynonyms(word) {
 		if(textdatabase[i].indexOf(word) != -1)
 			return textdatabase[i].split(",");
 }
+
+/* add to manifest.json
+  "background": {
+   "scripts": ["thesaurus.js"]
+  },
+  */
