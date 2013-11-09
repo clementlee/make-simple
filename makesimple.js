@@ -6,7 +6,7 @@ function walk(node) {
 	switch(node.nodeType) {
 		case 1:
 			for (child = node.firstChild; child; child = child.nextSibling) {
-				if(node.nodeName != "SCRIPT" && node.nodeName != "STYLE")
+				if(node.nodeName != "SCRIPT" && node.nodeName != "STYLE" && node.nodeName != "NOSCRIPT")
 					walk(child);
 			}
 			break;

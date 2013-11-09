@@ -3,10 +3,11 @@
 
   "name": "make.simple",
   "description": "lul",
-  "version": "0.1",
+  "version": "0.2",
+
   "permissions": [
-        "tabs", "http://*/*"
-    ],
+  "unlimitedStorage"
+  ],
 
   "content_scripts": [
     {
