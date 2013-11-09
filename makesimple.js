@@ -27,9 +27,8 @@ function getSynonyms(word) {
 		return [word];
 	//TODO: FIX THIS BECAUSE IT ISN'T WORKING
 	for(var i = 0; i < textdatabase.length; i++ ) {
-		console.log("hi");
 		var line = textdatabase[i];
-		console.log(line);
+		//console.log(line);
 		for(var j = 0; j < line.length; j++) {
 			var test = line[j];
 			if(trim1(test)===trim1(word)) {
@@ -65,7 +64,7 @@ function process(text){
 	//console.log(words);
 	for(var i = 0; i < words.length; i++) {
 		var word = words[i];
-		if(typeof word != 'undefined' && word.length > 8) {
+		if(typeof word != 'undefined' && word.length > 5) {
 			//console.log(word.length+": "+word);
 			var synonyms = getSynonyms(word);
 			//console.log(word+": ");
