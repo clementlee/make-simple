@@ -3,7 +3,7 @@
 
   "name": "make.simple",
   "description": "lul",
-  "version": "0.2",
+  "version": "0.3",
 
   "permissions": [
   "unlimitedStorage"
@@ -12,6 +12,7 @@
   "web_accessible_resources": [
     "mthesaur.txt"
   ],
+  
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
