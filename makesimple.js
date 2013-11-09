@@ -8,28 +8,35 @@ xhr.onreadystatechange = function()
     {
         var textdatabase = xhr.responseText.split("\n");
         walk(document.body);
+
+		document.body.addEventListener('DOMNodeInserted', function(event) {
+    		walk(event.target);});
     }
 };
 xhr.send();
+walk(document.body);
+document.body.addEventListener('DOMNodeInserted', function(event) {
+    		walk(event.target);});
 
 function getSynonyms(word) {
 	if(word == undefined)
 		return word;
-	console.log(word);
-	for(var i = 0; i < textdatabase.length; i++) {
-		var split = textdatabase[i].split(",");
-		for(var j = 0; j < split.length; j++)
-			if(split[i]===word)
+	//console.log(word);
+	for(line in textdatabase ) {
+		console.log('hi');
+		var split = line.split(",");
+		for(test in split) {
+			console.log(test);
+			/*if(split[i]===word) {
 				return split;
+			}*/
+		}
 	}
 	return [word];
 }
 //DELETE THIS ASAP******************************************
 
-walk(document.body);
 
-document.body.addEventListener('DOMNodeInserted', function(event) {
-    walk(event.target);});
 function walk(node) {
 	var treeWalker = document.createTreeWalker(
 	    node,
@@ -41,32 +48,23 @@ function walk(node) {
 		var current = treeWalker.currentNode;
 		current.textContent = process(current.textContent);
 	}
-	/*
-	var child;
-	switch(node.nodeType) {
-		case 1:
-			for (child = node.firstChild; child; child = child.nextSibling) {
-				if(node.nodeName != "SCRIPT" && node.nodeName != "STYLE" && node.nodeName != "NOSCRIPT")
-					walk(child);
-			}
-			break;
-		case 3:
-			process(node);
-			break;
-	}*/
 }
 
 function process(text){
+	
 	var processedText = text;
 	var words = text.split(" ");
+	
+	//console.log(words);
 	for(var i = 0; i < words.length; i++) {
 		var word = words[i];
 		if(word != undefined && word.length > 8)
+			//console.log(word);
 			var synonyms = getSynonyms(word);
 			//console.log(word+": ");
 			//console.log(synonyms);
-			if(synonyms != undefined)
-				processedText = processedText.replace(word, getSynonyms(word)[3]);
+			//if(synonyms != undefined)
+			//	processedText = processedText.replace(word, getSynonyms(word)[3]);
 	}
 	return processedText;
 }
