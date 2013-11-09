@@ -22,6 +22,7 @@ function getSynonyms(word) {
 	if(word == undefined)
 		return word;
 	//console.log(word);
+	//TODO: FIX THIS BECAUSE IT ISN'T WORKING
 	for(line in textdatabase ) {
 		console.log('hi');
 		var split = line.split(",");
