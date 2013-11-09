@@ -1,9 +1,11 @@
+var aggression = 5;
+
+var port = chrome.runtime.connect({name: "thesaurus"});
 document.body.addEventListener('DOMNodeInserted', function(event) {
 	walk(event.target);});
 
 walk(document.body);
 
-var port = chrome.runtime.connect({name: "thesaurus"});
 function walk(node) {
 	var ent = document.createTreeWalker(
 		node, NodeFilter.SHOW_TEXT, null, false);
