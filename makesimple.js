@@ -1,7 +1,19 @@
-console.log("loading");
-
 walk(document.body);
+
+document.body.addEventListener('DOMNodeInserted', function(event) {
+    walk(event.target);});
 function walk(node) {
+	var treeWalker = document.createTreeWalker(
+	    node,
+	    NodeFilter.SHOW_TEXT,
+	    null,
+	    false
+	);
+	while(treeWalker.nextNode()) {
+		var current = treeWalker.currentNode;
+		current.textContent = process(current.textContent);
+	}
+	/*
 	var child;
 	switch(node.nodeType) {
 		case 1:
@@ -13,9 +25,14 @@ function walk(node) {
 		case 3:
 			process(node);
 			break;
-	}
+	}*/
 }
 
-function process(node){
-	console.log(node.nodeValue);
+function process(text){
+	var processedText = text;
+	var words = text.split(" ");
+	for(var i = 0; i < words.length; i++) {
+
+	}
+	return processedText;
 }
