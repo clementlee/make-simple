@@ -2,17 +2,20 @@
   "manifest_version": 2,
 
   "name": "make.simple",
-  "description": "lul",
-  "version": "0.3",
+  "description": "You want simple? We make simple. We KNOW simple.",
+  "version": "0.3.1.4",
 
   "permissions": [
   "unlimitedStorage"
   ],
+  "icons": { "16": "icon16.png",
+             "48": "icon48.png",
+            "128": "icon128.png" },
 
   "web_accessible_resources": [
     "mthesaur.txt"
   ],
-  
+
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
