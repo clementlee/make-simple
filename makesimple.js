@@ -1,41 +1,94 @@
+var textdatabase = [];
+var hashtable = {};
 var aggression = 5;
 
-var port = chrome.runtime.connect({name: "thesaurus"});
+var xhr = new XMLHttpRequest();
+xhr.open('GET', chrome.extension.getURL('mthesaur.txt'), true);
+xhr.onreadystatechange = function()
+{
+	if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
+	{ 
+		var temptextdatabase = xhr.responseText.split("\n");
+        //console.log(temptextdatabase);
+        for(var i = 0; i < temptextdatabase.length; i++) {
+        	var line = temptextdatabase[i].split(",");
+        	textdatabase.push(line);
+        	for(var j = 0; j < line.length; j++) {
+        		if(line[j].length > aggression) {
+        			for(var k = 0; k < line.length; k++) {
+        				if(line[k].length <= aggression) {
+        					hashtable[line[j]] = line[k];
+        					break;
+        				}
+        			}
+        		}
+        	}
+        }
+        walk(document.body);
+    }
+};
+xhr.send();
 document.body.addEventListener('DOMNodeInserted', function(event) {
 	walk(event.target);});
 
-walk(document.body);
-
-function walk(node) {
-	var ent = document.createTreeWalker(
-		node, NodeFilter.SHOW_TEXT, null, false);
-	while(ent.nextNode()) {
-		var current = ent.currentNode;
-		process(current.textContent, current);
-	}
+function trim1 (str) {
+	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
-function msgProcess(msg) {
-	if(typeof msg.synonyms != 'undefined') {
-		for(var i = 0; i < msg.synonyms.length; i++) {
-			if(msg.synonyms[i] <= msg.aggression){
-				msg.node.textContent = msg.node.textContent.replace(word, synonyms[i]);
+function getSynonyms(word) {
+	if(typeof word === 'undefined')
+		return [word];
+	word = word.toLowerCase();
+	//TODO: FIX THIS BECAUSE IT ISN'T WORKING
+	/*for(var i = 0; i < textdatabase.length; i++ ) {
+		var line = textdatabase[i];
+		//console.log(line);
+		for(var j = 0; j < line.length; j++) {
+			var test = line[j];
+			if(trim1(test)===trim1(word)) {
+				console.log("found: "+test+", "+word.length);
+				return line;
 			}
 		}
+	}*/
+	if(hashtable.hasOwnProperty(word))
+		return [hashtable[word]];
+	return [word];
+}
+//DELETE THIS ASAP******************************************
+
+
+function walk(node) {
+	//console.log(textdatabase[0]);
+	var ent = document.createTreeWalker(
+		node,
+		NodeFilter.SHOW_TEXT,
+		null,
+		false
+		);
+	while(ent.nextNode()) {
+		var current = ent.currentNode;
+		current.textContent = process(current.textContent);
 	}
 }
-port.onMessage.addListener(msgProcess);
-function process(text, node){
+
+function process(text){
 	
 	var processedText = text;
 	var words = text.split(" ");
 	
+	//console.log(words);
 	for(var i = 0; i < words.length; i++) {
 		var word = words[i];
-
 		if(typeof word != 'undefined' && word.length > aggression) {
-			//var synonyms = getSynonyms(word);
-			port.postMessage({need: word, current: node});
-
+			//console.log(word.length+": "+word);
+			var synonyms = getSynonyms(word);
+			//console.log(word+": ");
+			//console.log(synonyms);
+			if(typeof synonyms != 'undefined') {
+				//console.log("replacing "+word+" with "+ synonyms[0]);
+				processedText = processedText.replace(word, synonyms[0]);
+			}
 		}
 	}
+	return processedText;
 }
