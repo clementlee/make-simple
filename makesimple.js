@@ -1,22 +1,28 @@
-chrome.runtime.getBackgroundPage(function(){
-	
-	document.body.addEventListener('DOMNodeInserted', function(event) {
-		walk(event.target);});
-	walk(document.body);
-})
-var curSyms = [];
-port.onMessage.addListener(function(msg) {curSyms = msg.synonyms});
+document.body.addEventListener('DOMNodeInserted', function(event) {
+	walk(event.target);});
+
+walk(document.body);
+
 var port = chrome.runtime.connect({name: "thesaurus"});
 function walk(node) {
 	var ent = document.createTreeWalker(
 		node, NodeFilter.SHOW_TEXT, null, false);
 	while(ent.nextNode()) {
 		var current = ent.currentNode;
-		current.textContent = process(current.textContent);
+		process(current.textContent, current);
 	}
 }
-
-function process(text){
+function msgProcess(msg) {
+	if(typeof msg.synonyms != 'undefined') {
+		for(var i = 0; i < msg.synonyms.length; i++) {
+			if(msg.synonyms[i] <= msg.aggression){
+				msg.node.textContent = msg.node.textContent.replace(word, synonyms[i]);
+			}
+		}
+	}
+}
+port.onMessage.addListener(msgProcess);
+function process(text, node){
 	
 	var processedText = text;
 	var words = text.split(" ");
@@ -26,13 +32,8 @@ function process(text){
 
 		if(typeof word != 'undefined' && word.length > aggression) {
 			//var synonyms = getSynonyms(word);
-			port.postMessage({need: word});
+			port.postMessage({need: word, current: node});
 
-
-			if(typeof synonyms != 'undefined') {
-				processedText = processedText.replace(word, synonyms[0]);
-			}
 		}
 	}
-	return processedText;
 }

@@ -37,7 +37,12 @@ function getSynonyms(word) {
 		return [hashtable[word]];
 	return [word];
 }
-
+chrome.runtime.onConnect.addListener(function(port) {
+  console.assert(port.name == "thesaurus");
+  port.onMessage.addListener(function(msg) {
+    port.postMessage({node: msg.current, synonyms:getSynonyms(msg.word), aggression: aggression});
+  });
+});
 /* add to manifest.json
   "background": {
    "scripts": ["thesaurus.js"]
