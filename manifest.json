@@ -4,11 +4,15 @@
   "name": "make.simple",
   "description": "lul",
   "version": "0.1",
+  "permissions": [
+        "tabs", "http://*/*"
+    ],
 
   "content_scripts": [
     {
-      "matches": ["http://*"],
-      "js": ["jquery.js", "makesimple.js"]
+      "matches": ["<all_urls>"],
+      "js": ["jquery.js", "makesimple.js"],
+      "run_at": "document_end"
     }
-  ],
+  ]
 }
