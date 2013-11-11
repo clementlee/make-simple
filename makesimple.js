@@ -2,6 +2,9 @@ var textdatabase = [];
 var hashtable = {};
 var aggression = 5;
 
+var hashtableLoaded = false;
+var freqlistLoaded = false;
+
 var xhr = new XMLHttpRequest();
 xhr.open('GET', chrome.extension.getURL('mthesaur.txt'), true);
 xhr.onreadystatechange = function()
@@ -26,10 +29,24 @@ xhr.onreadystatechange = function()
         		}
         	}
         }
+        hashtableLoaded = true;
         walk(document.body);
     }
 };
 xhr.send();
+
+var xhr = new XMLHttpRequest();
+xhr.open('GET', chrome.extension.getURL('word_freq.txt'), true);
+xhr.onreadystatechange = function()
+{
+	if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
+	{
+		freqlistLoaded = true;
+		walk(document.body); 
+	}
+};
+xhr.send();
+
 
 document.body.addEventListener('DOMNodeInserted', function(event) {
 	walk(event.target);});
@@ -51,12 +68,14 @@ function getSynonyms(word) {
 }
 
 function walk(node) {
-	var ent = document.createTreeWalker(
-		node, NodeFilter.SHOW_TEXT, null, false);
+	if(freqlistLoaded && hashtableLoaded) {
+		var ent = document.createTreeWalker(
+			node, NodeFilter.SHOW_TEXT, null, false);
 
-	while(ent.nextNode()) {
-		var current = ent.currentNode;
-		current.textContent = process(current.textContent);
+		while(ent.nextNode()) {
+			var current = ent.currentNode;
+			current.textContent = process(current.textContent);
+		}
 	}
 }
 
