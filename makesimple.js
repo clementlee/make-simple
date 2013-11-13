@@ -1,5 +1,6 @@
 var textdatabase = [];
 var hashtable = {};
+var freqlist = {};
 var aggression = 5;
 
 var hashtableLoaded = false;
@@ -41,6 +42,10 @@ xhr.onreadystatechange = function()
 {
 	if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
 	{
+		var tempfreqlist = xhr.responseText.split("\n");
+		for(var i = 0 ; i < tempfreqlist.length; i++){
+			freqlist[tempfreqlist[i]] = i;
+		}
 		freqlistLoaded = true;
 		walk(document.body); 
 	}
