@@ -53,8 +53,7 @@ xhr.onreadystatechange = function()
 xhr.send();
 
 
-document.body.addEventListener('DOMNodeInserted', function(event) {
-	walk(event.target);});
+
 
 function trim (str) {
 	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
@@ -81,6 +80,8 @@ function walk(node) {
 			var current = ent.currentNode;
 			current.textContent = process(current.textContent);
 		}
+		document.body.addEventListener('DOMNodeInserted', function(event) {
+			walk(event.target);});
 	}
 }
 
