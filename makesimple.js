@@ -52,8 +52,16 @@ xhr.onreadystatechange = function()
 };
 xhr.send();
 
-
-
+function getCommoner(word) {
+	if(typeof word === 'undefined')
+		return [word];
+	word = trim(word.toLowerCase(););
+	if(!hashtable.hasOwnProperty(word)) {
+		//replace with common word
+	}
+	else
+		return [word];
+}
 
 function trim (str) {
 	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
@@ -63,7 +71,7 @@ function getSynonyms(word) {
 	if(typeof word === 'undefined')
 		return [word];
 
-	word = word.toLowerCase();
+	word = trim(word.toLowerCase());
 
 	if(hashtable.hasOwnProperty(word))
 		return [hashtable[word]];
