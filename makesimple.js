@@ -54,13 +54,20 @@ xhr.send();
 
 function getCommoner(word) {
 	if(typeof word === 'undefined')
-		return [word];
+		return word;
 	word = trim(word.toLowerCase(););
 	if(!hashtable.hasOwnProperty(word)) {
-		//replace with common word
+		var synonyms = getSynonyms(word);
+		if(typeof synonyms === 'undefined')
+			return synonyms;
+		for(var i = 0; i < synonyms.length; i++) {
+			if(hashtable.hasOwnProperty(synonyms[i])) {
+				return synonyms[i];
+			}
+		}
 	}
 	else
-		return [word];
+		return word;
 }
 
 function trim (str) {
