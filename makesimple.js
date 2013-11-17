@@ -108,19 +108,21 @@ function process(text){
 	for(var i = 0; i < words.length; i++) {
 		var word = words[i];
 
-		if(typeof word != 'undefined' && word.length > aggression) {
+	// 	if(typeof word != 'undefined' && word.length > aggression) {
 
-			var synonyms = getSynonyms(word);
+	// 		var synonyms = getSynonyms(word);
 
-			if(typeof synonyms != 'undefined') {
-				for(var j = 0; j < synonyms.length; j++){
-					if(synonyms[j].length <= aggression) {
-						processedText = processedText.replace(word, synonyms[j]);
-						break;
-					}
-				}
-			}
-		}
+	// 		if(typeof synonyms != 'undefined') {
+	// 			for(var j = 0; j < synonyms.length; j++){
+	// 				if(synonyms[j].length <= aggression) {
+	// 					processedText = processedText.replace(word, synonyms[j]);
+	// 					break;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+
+		processedText.replace(word, getCommoner(word));
 	}
 	return processedText;
 }
